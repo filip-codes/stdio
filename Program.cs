@@ -1,6 +1,6 @@
 using Studio;
 
-Application app = new("http://localhost:8080/");
+Application app = new();
 
 app.Get("/", "Studio.Controllers.WelcomeController", "Index");
 

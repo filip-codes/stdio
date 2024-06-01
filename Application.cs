@@ -1,6 +1,7 @@
 using System.Net;
 using System.Reflection;
 using System.Text;
+using Studio.Support;
 
 namespace Studio;
 
@@ -14,12 +15,13 @@ public class Application
 
     private List<Route> _routes { get; set; }
     
-    public Application(string uri)
+    public Application()
     {
-        this._uri = uri;
+        DotEnv.LoadFrom(".env");
+        this._uri = Environment.GetEnvironmentVariable("APP_URL")!;
         this._routes = new();
         
-        this._listener.Prefixes.Add(uri);
+        this._listener.Prefixes.Add(this._uri);
     }
     
     public void Run()
@@ -44,7 +46,7 @@ public class Application
         if (controller is null)
             throw new InvalidOperationException("Controller not found");
         
-        Route route = new Route(path, controller, method);
+        Route route = new Route(path, controller, method, HttpMethod.Get);
         this._routes.Add(route);
     }
 
@@ -65,31 +67,44 @@ public class Application
 
         return magicValue?.ToString();
     }
-    
-    protected string View(string filename)
-    {
-        return File.ReadAllText($"Views/{filename}.cshtml").ReplaceLineEndings();
-    }
-    
+
     private async Task ProcessRequest(HttpListenerContext context)
     {
         _container.Register(() => new Request(context.Request));
 
-        Route? route = this._routes.FirstOrDefault(route => route.Path == context.Request.Url.AbsolutePath);
-        
-        if (route is null)
-            throw new Exception($"Route not found for {context.Request.Url?.AbsolutePath}");
+        Route? route = this._routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
-        string? content = this.ExecuteRoute(route.Path);
+        byte[] buffer = new byte[0];
 
-        if (content is null)
-            throw new InvalidOperationException($"{route.Controller.ToString() + "." + route.Method} returned null");
+        // accept text/html and application/json content types
+        if (route is not null && context.Request.AcceptTypes != null && context.Request.AcceptTypes.Any() && context.Request.AcceptTypes.Contains("text/html"))
+        {
+            switch (context.Request.HttpMethod)
+            {
+                case "GET":
+                    if (route.HttpMethod != HttpMethod.Get)
+                        throw new InvalidOperationException("Method not allowed");
         
-        byte[] buffer = Encoding.UTF8.GetBytes(content);
+                    break;
+                default:
+                    break;
+            }
+
+            string? content = this.ExecuteRoute(route.Path);
+
+            if (content is null)
+                throw new InvalidOperationException($"{route.Controller.ToString() + "." + route.Method} returned null");
+        
+            buffer = Encoding.UTF8.GetBytes(content);
+        }
+        else
+        {
+            buffer = Encoding.UTF8.GetBytes("");
+        }
 
         HttpListenerResponse response = context.Response;
-        
-        response.ContentLength64 = buffer.Length;
+
+        response.ContentLength64 = buffer?.Length ?? 0;
         response.StatusCode = 200;
         response.ContentType = "text/html";
 

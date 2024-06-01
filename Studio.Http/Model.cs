@@ -1,4 +1,4 @@
-namespace Studio.Http.Models;
+namespace Studio.Http;
 
 public abstract class Model
 {
