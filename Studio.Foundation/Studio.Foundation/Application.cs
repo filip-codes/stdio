@@ -98,6 +98,11 @@ public class Application
                         throw new InvalidOperationException("Method not allowed");
 
                     break;
+                case "PATCH":
+                    if (route.HttpMethod != HttpMethod.Patch)
+                        throw new InvalidOperationException("Method not allowed");
+
+                    break;
             }
 
             string? content = this.ExecuteRoute(route.Path);
