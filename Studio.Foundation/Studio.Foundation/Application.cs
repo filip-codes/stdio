@@ -83,7 +83,10 @@ public class Application
                         throw new InvalidOperationException("Method not allowed");
         
                     break;
-                default:
+                case "POST":
+                    if (route.HttpMethod != HttpMethod.Post)
+                        throw new InvalidOperationException("Method not allowed");
+
                     break;
             }
 
@@ -96,7 +99,7 @@ public class Application
         }
         else
         {
-            buffer = Encoding.UTF8.GetBytes("");
+            buffer = Encoding.UTF8.GetBytes(string.Empty);
         }
 
         HttpListenerResponse response = context.Response;
