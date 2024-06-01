@@ -5,9 +5,8 @@ using Studio.Support;
 
 namespace Studio.Foundation;
 
-public class Application
+public class Application : Container
 {
-    private readonly Container _container = new();
     private readonly HttpListener _listener = new();
     private readonly string _uri;
     private List<Route> _routes { get; set; }
@@ -116,7 +115,7 @@ public class Application
         object? controller = constructor?.Invoke(new object[] {});
         
         MethodInfo? methodInfo = controllerType?.GetMethod(route.Method);
-        var parameters = this._container.ResolveMultiple(methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+        var parameters = base.ResolveMultiple(methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
         object? magicValue = methodInfo?.Invoke(controller, parameters);
 
         return magicValue?.ToString();
@@ -137,7 +136,7 @@ public class Application
     
     private async Task ProcessRequest(HttpListenerContext context)
     {
-        _container.Register(() => new Request(context.Request));
+        base.Register(() => new Request(context.Request));
         this._response = context.Response;
 
         Route? route = this._routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
