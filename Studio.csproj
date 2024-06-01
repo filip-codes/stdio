@@ -133,8 +133,6 @@
 
     <ItemGroup>
       <ProjectReference Include="Studio.Foundation\Studio.Foundation\Studio.Foundation.csproj" />
-      <ProjectReference Include="Studio.Http\Studio.Http.csproj" />
-      <ProjectReference Include="Studio.Support\Studio.Support.csproj" />
     </ItemGroup>
 
 </Project>

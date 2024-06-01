@@ -1,4 +1,4 @@
-using Studio;
+using Studio.Foundation;
 
 Application app = new();
 

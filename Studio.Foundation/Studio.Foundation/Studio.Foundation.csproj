@@ -12,4 +12,9 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Studio.Http\Studio.Http.csproj" />
+      <ProjectReference Include="..\..\Studio.Support\Studio.Support.csproj" />
+    </ItemGroup>
+
 </Project>

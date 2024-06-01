@@ -3,16 +3,13 @@ using System.Reflection;
 using System.Text;
 using Studio.Support;
 
-namespace Studio;
+namespace Studio.Foundation;
 
 public class Application
 {
     private readonly Container _container = new();
-
     private readonly HttpListener _listener = new();
-
     private readonly string _uri;
-
     private List<Route> _routes { get; set; }
     
     public Application()
@@ -38,7 +35,7 @@ public class Application
     
     public void Get(string path, string controller, string method)
     {
-        this.Get(path, Type.GetType(controller), method);
+        this.Get(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
     }
     
     public void Get(string path, Type? controller, string method)
