@@ -88,6 +88,11 @@ public class Application
                         throw new InvalidOperationException("Method not allowed");
 
                     break;
+                case "PUT":
+                    if (route.HttpMethod != HttpMethod.Put)
+                        throw new InvalidOperationException("Method not allowed");
+
+                    break;
             }
 
             string? content = this.ExecuteRoute(route.Path);
