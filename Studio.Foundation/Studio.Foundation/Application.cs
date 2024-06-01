@@ -127,7 +127,7 @@ public class Application : Container
         string? content = File.ReadAllText($"Studio.Foundation/Studio.Foundation/Views/Errors/{statusCode}.cshtml").ReplaceLineEndings().Replace("{{ message }}", message);
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         this._response.ContentLength64 = buffer?.Length ?? 0;
-        this._response.StatusCode = 200;
+        this._response.StatusCode = statusCode;
         this._response.ContentType = "text/html";
 
         await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
@@ -185,6 +185,7 @@ public class Application : Container
         else
         {
             buffer = Encoding.UTF8.GetBytes(string.Empty);
+            Abort("404 - Not Found", 404);
         }
 
         this._response.ContentLength64 = buffer?.Length ?? 0;

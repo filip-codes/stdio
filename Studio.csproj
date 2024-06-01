@@ -1,138 +1,59 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Studio-2E660D92-D974-445E-8CF1-AE8487893F2C</UserSecretsId>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>aspnet-Studio-2E660D92-D974-445E-8CF1-AE8487893F2C</UserSecretsId>
-    </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Studio.Support.Tests\**" />
+    <None Remove="Studio.Support\**" />
+    <None Remove="Studio.Http\**" />
+    <None Remove="Studio.Foundation\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <None Remove="Studio.Support.Tests\**" />
-        <None Remove="Studio.Support\**" />
-        <None Remove="Studio.Http\**" />
-        <None Remove="Studio.Foundation\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Studio.Support.Tests\**" />
+    <Compile Remove="Studio.Support\**" />
+    <Compile Remove="Studio.Http\**" />
+    <Compile Remove="Studio.Foundation\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3"/>
-    </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Studio.Support.Tests\**" />
+    <EmbeddedResource Remove="Studio.Support\**" />
+    <EmbeddedResource Remove="Studio.Http\**" />
+    <EmbeddedResource Remove="Studio.Foundation\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Studio.Support.Tests\**" />
-      <Compile Remove="Studio.Support\**" />
-      <Compile Remove="Studio.Http\**" />
-      <Compile Remove="Studio.Foundation\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Studio.Support.Tests\**" />
+    <Content Remove="Studio.Support\**" />
+    <Content Remove="Studio.Http\**" />
+    <Content Remove="Studio.Foundation\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Remove="Studio.Support.Tests\**" />
-      <EmbeddedResource Remove="Studio.Support\**" />
-      <EmbeddedResource Remove="Studio.Http\**" />
-      <EmbeddedResource Remove="Studio.Foundation\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Studio.Support.Tests\bin\Debug\net8.0\Studio.Support.Tests.deps.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support.Tests\bin\Debug\net8.0\Studio.Support.Tests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\Studio.Support.Tests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support\bin\Debug\net8.0\Studio.Support.deps.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Support\obj\Studio.Support.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Http\bin\Debug\net8.0\Studio.Http.deps.json" />
+    <_ContentIncludedByDefault Remove="Studio.Http\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Http\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Http\obj\Studio.Http.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\Studio.Foundation.csproj.nuget.dgspec.json" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Content Remove="Studio.Support.Tests\**" />
-      <Content Remove="Studio.Support\**" />
-      <Content Remove="Studio.Http\**" />
-      <Content Remove="Studio.Foundation\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Studio.Support.Tests\bin\Debug\net8.0\Studio.Support.Tests.deps.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support.Tests\bin\Debug\net8.0\Studio.Support.Tests.runtimeconfig.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\project.packagespec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support.Tests\obj\Studio.Support.Tests.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support\bin\Debug\net8.0\Studio.Support.deps.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support\obj\project.packagespec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Support\obj\Studio.Support.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Http\bin\Debug\net8.0\Studio.Http.deps.json" />
-      <_ContentIncludedByDefault Remove="Studio.Http\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="Studio.Http\obj\project.packagespec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Http\obj\Studio.Http.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.assets.json" />
-      <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.packagespec.json" />
-      <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\Studio.Foundation.csproj.nuget.dgspec.json" />
-      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\Error.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\_LoginPartial.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\favicon.ico" />
-      <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="Studio.Foundation\Studio.Foundation\Studio.Foundation.csproj" />
-    </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="Studio.Foundation\Studio.Foundation\Studio.Foundation.csproj" />
+  </ItemGroup>
 </Project>

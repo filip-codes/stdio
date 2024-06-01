@@ -1,0 +1,5 @@
+@layout('DefaultLayout')
+    
+@section('content')
+<p>About</p>
+@endsection
