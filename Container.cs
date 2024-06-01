@@ -18,9 +18,26 @@ public class Container
 
     public T Resolve<T>()
     {
-        if (this._registrations.TryGetValue(typeof(T), out var factory))
-            return (T)factory();
+        return (T)this.Resolve(typeof(T));
+    }
+    
+    public object Resolve(Type type)
+    {
+        if (this._registrations.TryGetValue(type, out var factory))
+            return factory();
 
-        throw new InvalidOperationException("Service of type {typeof(T)} not found");
+        throw new InvalidOperationException($"Service of type {type} not found");
+    }
+
+    public object[] ResolveMultiple(Type[] types)
+    {
+        var parameters = new object[types.Length];
+        
+        for (int i = 0; i < types.Length; i++)
+        {
+            parameters[i] = this.Resolve(types[i]);
+        }
+
+        return parameters;
     }
 }

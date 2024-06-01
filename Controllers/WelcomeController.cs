@@ -7,7 +7,7 @@ public class WelcomeController
         return File.ReadAllText($"Views/{filename}.cshtml").ReplaceLineEndings();
     }
     
-    public string Index()
+    public string Index(Request request)
     {
         return this.View("Welcome");
     }

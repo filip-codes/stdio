@@ -60,7 +60,8 @@ public class Application
         object? controller = constructor?.Invoke(new object[] {});
         
         MethodInfo? methodInfo = controllerType?.GetMethod(route.Method);
-        object? magicValue = methodInfo?.Invoke(controller, new object[] {});
+        var parameters = this._container.ResolveMultiple(methodInfo.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+        object? magicValue = methodInfo?.Invoke(controller, parameters);
 
         return magicValue?.ToString();
     }
