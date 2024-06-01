@@ -46,6 +46,20 @@ public class Application
         Route route = new Route(path, controller, method, HttpMethod.Get);
         this._routes.Add(route);
     }
+    
+    public void Post(string path, string controller, string method)
+    {
+        this.Post(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
+    }
+
+    public void Post(string path, Type? controller, string method)
+    {
+        if (controller is null)
+            throw new InvalidOperationException("Controller not found");
+
+        Route route = new Route(path, controller, method, HttpMethod.Post);
+        this._routes.Add(route);
+    }
 
     public string? ExecuteRoute(string path)
     {
