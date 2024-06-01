@@ -93,6 +93,11 @@ public class Application
                         throw new InvalidOperationException("Method not allowed");
 
                     break;
+                case "DELETE":
+                    if (route.HttpMethod != HttpMethod.Delete)
+                        throw new InvalidOperationException("Method not allowed");
+
+                    break;
             }
 
             string? content = this.ExecuteRoute(route.Path);
