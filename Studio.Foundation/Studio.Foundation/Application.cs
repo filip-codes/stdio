@@ -88,6 +88,20 @@ public class Application
         Route route = new Route(path, controller, method, HttpMethod.Put);
         this._routes.Add(route);
     }
+    
+    public void Delete(string path, string controller, string method)
+    {
+        this.Delete(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
+    }
+    
+    public void Delete(string path, Type? controller, string method)
+    {
+        if (controller is null)
+            throw new InvalidOperationException("Controller not found");
+        
+        Route route = new Route(path, controller, method, HttpMethod.Delete);
+        this._routes.Add(route);
+    }
 
     public string? ExecuteRoute(string path)
     {
