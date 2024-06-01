@@ -11,6 +11,7 @@ public class Application
     private readonly HttpListener _listener = new();
     private readonly string _uri;
     private List<Route> _routes { get; set; }
+    private HttpListenerResponse _response { get; set; }
     
     public Application()
     {
@@ -121,9 +122,23 @@ public class Application
         return magicValue?.ToString();
     }
 
+    private async void Abort(string message, int statusCode)
+    {
+        // ToDo: Get the right path for Views without hardcoding it
+        string? content = File.ReadAllText($"Studio.Foundation/Studio.Foundation/Views/Errors/{statusCode}.cshtml").ReplaceLineEndings().Replace("{{ message }}", message);
+        byte[] buffer = Encoding.UTF8.GetBytes(content);
+        this._response.ContentLength64 = buffer?.Length ?? 0;
+        this._response.StatusCode = 200;
+        this._response.ContentType = "text/html";
+
+        await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+        this._response.OutputStream.Close();
+    }
+    
     private async Task ProcessRequest(HttpListenerContext context)
     {
         _container.Register(() => new Request(context.Request));
+        this._response = context.Response;
 
         Route? route = this._routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
@@ -136,27 +151,27 @@ public class Application
             {
                 case "GET":
                     if (route.HttpMethod != HttpMethod.Get)
-                        throw new InvalidOperationException("Method not allowed");
+                        Abort("Method not allowed", 405);
         
                     break;
                 case "POST":
                     if (route.HttpMethod != HttpMethod.Post)
-                        throw new InvalidOperationException("Method not allowed");
+                        Abort("Method not allowed", 405);
 
                     break;
                 case "PUT":
                     if (route.HttpMethod != HttpMethod.Put)
-                        throw new InvalidOperationException("Method not allowed");
+                        Abort("Method not allowed", 405);
 
                     break;
                 case "DELETE":
                     if (route.HttpMethod != HttpMethod.Delete)
-                        throw new InvalidOperationException("Method not allowed");
+                        Abort("Method not allowed", 405);
 
                     break;
                 case "PATCH":
                     if (route.HttpMethod != HttpMethod.Patch)
-                        throw new InvalidOperationException("Method not allowed");
+                        Abort("Method not allowed", 405);
 
                     break;
             }
@@ -173,13 +188,11 @@ public class Application
             buffer = Encoding.UTF8.GetBytes(string.Empty);
         }
 
-        HttpListenerResponse response = context.Response;
+        this._response.ContentLength64 = buffer?.Length ?? 0;
+        this._response.StatusCode = 200;
+        this._response.ContentType = "text/html";
 
-        response.ContentLength64 = buffer?.Length ?? 0;
-        response.StatusCode = 200;
-        response.ContentType = "text/html";
-
-        await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
+        await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+        this._response.OutputStream.Close();
     }
 }
