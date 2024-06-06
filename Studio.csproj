@@ -11,6 +11,7 @@
     <None Remove="Studio.Support\**" />
     <None Remove="Studio.Http\**" />
     <None Remove="Studio.Foundation\**" />
+    <None Remove="Studio.Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
     <Compile Remove="Studio.Support\**" />
     <Compile Remove="Studio.Http\**" />
     <Compile Remove="Studio.Foundation\**" />
+    <Compile Remove="Studio.Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +27,7 @@
     <EmbeddedResource Remove="Studio.Support\**" />
     <EmbeddedResource Remove="Studio.Http\**" />
     <EmbeddedResource Remove="Studio.Foundation\**" />
+    <EmbeddedResource Remove="Studio.Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +35,7 @@
     <Content Remove="Studio.Support\**" />
     <Content Remove="Studio.Http\**" />
     <Content Remove="Studio.Foundation\**" />
+    <Content Remove="Studio.Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +55,9 @@
     <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\project.packagespec.json" />
     <_ContentIncludedByDefault Remove="Studio.Foundation\Studio.Foundation\obj\Studio.Foundation.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\Studio.Exceptions.csproj.nuget.dgspec.json" />
   </ItemGroup>
 
   <ItemGroup>

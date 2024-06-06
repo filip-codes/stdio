@@ -1,19 +1,27 @@
-namespace Studio;
+namespace Studio.Foundation;
 
 public class Container
 {
-    private readonly Dictionary<Type, Func<object>> _registrations = new();
+    public readonly Dictionary<Type, Func<object>> Registrations = new();
     
-    public T Register<T>(Func<T> factory)
+    public T Register<T>(Func<T> factory) where T : class
     {
-        this._registrations[typeof(T)] = () => factory();
+        if (factory is null)
+            throw new ArgumentNullException(nameof(factory));
+        
+        this.Registrations[typeof(T)] = () => factory()!;
 
         return factory();
+    }
+    
+    public void Register<T>(T objectValue) where T : class
+    {
+        this.Registrations[typeof(T)] = () => objectValue;
     }
 
     public void Register<T, TImplementation>() where TImplementation : T, new()
     {
-        _registrations[typeof(T)] = () => new TImplementation();
+        Registrations[typeof(T)] = () => new TImplementation();
     }
 
     public T Resolve<T>()
@@ -23,7 +31,7 @@ public class Container
     
     public object Resolve(Type type)
     {
-        if (this._registrations.TryGetValue(type, out var factory))
+        if (this.Registrations.TryGetValue(type, out var factory))
             return factory();
 
         throw new InvalidOperationException($"Service of type {type} not found");

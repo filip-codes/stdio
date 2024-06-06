@@ -21,4 +21,16 @@ public class String
     {
         Assert.That("Hello World".Kebab(), Is.EqualTo("hello-world"));
     }
+    
+    [Test]
+    public void Append()
+    {
+        Assert.That("Hello ".Append("World"), Is.EqualTo("Hello World"));
+    }
+    
+    [Test]
+    public void Prepend()
+    {
+        Assert.That("World".Prepend("Hello "), Is.EqualTo("Hello World"));
+    }
 }

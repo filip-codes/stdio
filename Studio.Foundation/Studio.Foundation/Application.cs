@@ -1,111 +1,153 @@
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using Studio.Exceptions;
+using Studio.Http;
 using Studio.Support;
+using Studio.Support.Extensions;
 
 namespace Studio.Foundation;
 
 public class Application : Container
 {
-    private readonly HttpListener _listener = new();
+    public string Name { get; set; } = "Studio";
+    private static readonly HttpListener Listener = new();
     private readonly string _uri;
-    private List<Route> _routes { get; set; }
+    // private RouteCollection _routes { get; set; }
+    
+    // bad practice, response sollte nicht in der klasse gehalten werden
     private HttpListenerResponse _response { get; set; }
+    
+    private IEnumerable<Type> ConfigTypes { get; set; }
+    
+    private static readonly Assembly? Assembly = Assembly.GetEntryAssembly();
+    private static string _assemblyName = Assembly?.GetName().Name ?? string.Empty;
+    private static readonly string ConfigAssembly = _assemblyName.Append(".Config");
     
     public Application()
     {
-        DotEnv.LoadFrom(".env");
-        this._uri = Environment.GetEnvironmentVariable("APP_URL")!;
-        this._routes = new();
+        this.InitEnvironment();
         
-        this._listener.Prefixes.Add(this._uri);
+        this.Register(this);
+        var router = new Router(this);
+        this.Register(router);
+        
+        this.ConfigTypes = Assembly?.GetTypes().Where(type => type.Namespace == ConfigAssembly) ?? new List<Type>();
+        this.RegisterConfigurations();
+        
+        this._uri = Env.Get("APP_URL");
+        
+        Listener.Prefixes.Add(this._uri);
     }
-    
-    public void Run()
+
+    protected void InitEnvironment()
     {
-        this._listener.Start();
-        Console.WriteLine($"Listening for connections on {this._uri}");
+        Env.LoadFrom(".env");
+    }
+
+    private void RegisterConfigurations()
+    {
+        this.RegisterAppConfiguration(this.GetConfigType("App"));
+    }
+
+    private Type? GetConfigType(string name)
+    {
+        return ConfigTypes.FirstOrDefault(type => type.Name == name);
+    }
+
+    private void RegisterAppConfiguration(Type? type)
+    {
+        if (type is null)
+            throw new ConfigurationNotFoundException("App");
+
+        object? configuration = Activator.CreateInstance(type);
         
-        while (true)
+        PropertyInfo? urlInfo = configuration?.GetType().GetProperty("Url");
+        string url = urlInfo?.GetValue(configuration)?.ToString() ?? string.Empty;
+        if (string.IsNullOrEmpty(url))
+            throw new InvalidOperationException("Url not found in App configuration");
+        
+        PropertyInfo? providersProperty = configuration?.GetType().GetProperty("Providers");
+        
+        if (providersProperty is null)
+            throw new InvalidOperationException("Providers property not found in App configuration");
+
+        switch (providersProperty.PropertyType)
         {
-            var context = this._listener.GetContext();
-            Task.Run(() => this.ProcessRequest(context));
+            case { } t when t == typeof(List<string>):
+                IEnumerable<string> providerStrings = providersProperty.GetValue(configuration) as List<string> ?? new();
+
+                foreach (string provider in providerStrings)
+                {
+                    // get type for provider
+                    Type? providerType = Type.GetType(provider + ", " + Assembly.GetEntryAssembly()?.GetName().Name);
+                    if (providerType is null)
+                        throw new InvalidOperationException($"Provider not found: {provider}");
+                    
+                    this.Register(() => providerType);
+                }
+                
+                break;
+            case { } t when t == typeof(List<Type>):
+                IEnumerable<Type> providerTypes = providersProperty.GetValue(configuration) as List<Type> ?? new();
+
+                foreach (Type provider in providerTypes)
+                {
+                    this.Register(() => provider);
+                }
+                
+                foreach (Type provider in providerTypes)
+                {
+                    ConstructorInfo? constructor = provider.GetConstructor(Type.EmptyTypes);
+                    object? instance = constructor?.Invoke(new object[] {});
+
+                    // get all fields of the provider
+                    FieldInfo[] fields = provider.GetFields();
+                    foreach (FieldInfo field in fields)
+                    {
+                        // set the field value
+                        field.SetValue(instance, this.Resolve(field.FieldType));
+                    }
+                    
+                    MethodInfo? method = provider.GetMethod("Boot");
+                    var parameters = base.ResolveMultiple(method?.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+                    method?.Invoke(instance, parameters);
+                }
+                
+                break;
+            default:
+                throw new InvalidOperationException("Invalid type for Providers in App configuration.");
+                break;
         }
     }
-    
-    public void Get(string path, string controller, string method)
-    {
-        this.Get(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
-    }
-    
-    public void Get(string path, Type? controller, string method)
-    {
-        if (controller is null)
-            throw new InvalidOperationException("Controller not found");
-        
-        Route route = new Route(path, controller, method, HttpMethod.Get);
-        this._routes.Add(route);
-    }
-    
-    public void Post(string path, string controller, string method)
-    {
-        this.Post(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
-    }
 
-    public void Post(string path, Type? controller, string method)
+    public void Run()
     {
-        if (controller is null)
-            throw new InvalidOperationException("Controller not found");
+        try
+        {
+            Listener.Start();
+            Console.WriteLine($"Listening for connections on {this._uri}");
+        }
+        catch (HttpListenerException exception)
+        {
+            Console.Error.WriteLine(exception.Message);
+            return;
+        }
 
-        Route route = new Route(path, controller, method, HttpMethod.Post);
-        this._routes.Add(route);
-    }
-
-    public void Patch(string path, string controller, string method)
-    {
-        this.Patch(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
-    }
-
-    public void Patch(string path, Type? controller, string method)
-    {
-        if (controller is null)
-            throw new InvalidOperationException("Controller not found");
-
-        Route route = new Route(path, controller, method, HttpMethod.Patch);
-        this._routes.Add(route);
-    }
-    
-    public void Put(string path, string controller, string method)
-    {
-        this.Put(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
-    }
-    
-    public void Put(string path, Type? controller, string method)
-    {
-        if (controller is null)
-            throw new InvalidOperationException("Controller not found");
-        
-        Route route = new Route(path, controller, method, HttpMethod.Put);
-        this._routes.Add(route);
-    }
-    
-    public void Delete(string path, string controller, string method)
-    {
-        this.Delete(path, Type.GetType(controller + ", " + Assembly.GetEntryAssembly()?.GetName().Name), method);
-    }
-    
-    public void Delete(string path, Type? controller, string method)
-    {
-        if (controller is null)
-            throw new InvalidOperationException("Controller not found");
-        
-        Route route = new Route(path, controller, method, HttpMethod.Delete);
-        this._routes.Add(route);
+        Task.Run(async () =>
+        {
+            while (true)
+            {
+                var context = await Listener.GetContextAsync();
+                Task.Run(() => this.ProcessRequest(context));
+            }
+        }).Wait();
     }
 
     public string? ExecuteRoute(string path)
     {
-        Route? route = this._routes.Where(route => route.Path == path)?.FirstOrDefault();
+        Route? route = (this.Resolve(typeof(Router)) as Router)?.Routes.Where(route => route.Path == path)?.FirstOrDefault();
 
         if (route is null)
             throw new InvalidOperationException("Route not found");
@@ -136,10 +178,12 @@ public class Application : Container
     
     private async Task ProcessRequest(HttpListenerContext context)
     {
-        base.Register(() => new Request(context.Request));
+        this.Register(() => new Request(context.Request));
         this._response = context.Response;
 
-        Route? route = this._routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
+        List<Route> routes = this.Resolve<Router>().Routes;
+        
+        Route? route = routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
         byte[] buffer = new byte[0];
 

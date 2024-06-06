@@ -28,4 +28,17 @@ public static class String
     {
         return str.Snake("-");
     }
+
+    public static string Append(this string str, string value)
+    {
+        if (string.IsNullOrEmpty(str))
+            str = "";
+        
+        return str + value;
+    }
+
+    public static string Prepend(this string str, string value)
+    {
+        return value + str;
+    }
 }

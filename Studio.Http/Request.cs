@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Studio;
+namespace Studio.Http;
 
 public class Request
 {

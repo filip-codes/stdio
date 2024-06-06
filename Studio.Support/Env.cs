@@ -1,6 +1,8 @@
+using Studio.Exceptions;
+
 namespace Studio.Support;
 
-public class DotEnv
+public class Env
 {
     public static void LoadFrom(string path)
     {
@@ -21,5 +23,17 @@ public class DotEnv
 
             Environment.SetEnvironmentVariable(key, value);
         }
+    }
+
+    public static string Get(string key, string? defaultValue = null)
+    {
+        string? value = Environment.GetEnvironmentVariable(key);
+        if (value is null)
+            value = defaultValue;
+
+        if (value is null)
+            throw new EnvironmentVariableNotFoundException(key);
+
+        return value;
     }
 }

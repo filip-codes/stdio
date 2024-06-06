@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio.Support.Tests", "Stu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio.Foundation", "Studio.Foundation\Studio.Foundation\Studio.Foundation.csproj", "{B71E6F5D-8001-474C-9E84-3B14C2F39633}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio.Exceptions", "Studio.Exceptions\Studio.Exceptions.csproj", "{A211D0BC-18AF-473C-9377-C1C1E15B14F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{B71E6F5D-8001-474C-9E84-3B14C2F39633}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B71E6F5D-8001-474C-9E84-3B14C2F39633}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B71E6F5D-8001-474C-9E84-3B14C2F39633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A211D0BC-18AF-473C-9377-C1C1E15B14F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A211D0BC-18AF-473C-9377-C1C1E15B14F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A211D0BC-18AF-473C-9377-C1C1E15B14F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A211D0BC-18AF-473C-9377-C1C1E15B14F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

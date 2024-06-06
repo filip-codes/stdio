@@ -1,5 +1,5 @@
 @layout('DefaultLayout')
-    
+
 @section('content')
 <p>Welcome</p>
 @endsection
