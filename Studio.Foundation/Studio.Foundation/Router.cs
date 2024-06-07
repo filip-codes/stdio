@@ -23,6 +23,11 @@ public class Router
         
         return route;
     }
+    
+    public Route Get<T>(string path, T controller, string method) where T : new()
+    {
+        return this.Get(path, controller.GetType(), method);
+    }
 
     public void Group(Type type)
     {

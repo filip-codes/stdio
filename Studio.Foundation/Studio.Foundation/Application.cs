@@ -185,6 +185,8 @@ public class Application : Container
         
         Route? route = routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
+        route.RunMiddlewares();
+
         byte[] buffer = new byte[0];
 
         // accept text/html and application/json content types

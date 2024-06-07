@@ -1,6 +1,6 @@
 using Studio.Http;
 
-namespace Studio.Controllers;
+namespace Studio.App.Http.Controllers;
 
 public class WelcomeController : Controller
 {
