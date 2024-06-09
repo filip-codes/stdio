@@ -8,6 +8,8 @@ public class Router
     public Application App;
     public List<Route> Routes { get; set; }
     
+    private string _prefix { get; set; } = "";
+    
     public Router(Application app)
     {
         App = app;
@@ -15,9 +17,15 @@ public class Router
             Routes = new List<Route>();
     }
     
+    public Router Prefix(string prefix)
+    {
+        this._prefix = prefix;
+        return this;
+    }
+    
     public Route Get(string path, Type controller, string method)
     {
-        Route route = new Route(path, controller, method, HttpMethod.Get);
+        Route route = new Route(this._prefix + path, controller, method, HttpMethod.Get);
         route.App = this.App.Resolve<Application>();
         Routes.Add(route);
         
@@ -26,6 +34,9 @@ public class Router
     
     public Route Get<T>(string path, T controller, string method) where T : new()
     {
+        if (controller is null)
+            throw new ArgumentNullException(nameof(controller));
+        
         return this.Get(path, controller.GetType(), method);
     }
 

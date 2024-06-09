@@ -10,7 +10,8 @@ public class RouteServiceProvider : ServiceProvider
     {
         Routes(() =>
         {
-            Route.Group(typeof(Api));
+            Route.Prefix("api").Group(typeof(Api));
+            
             Route.Group(typeof(Web));
         });
     }
