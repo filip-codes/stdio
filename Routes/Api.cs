@@ -1,10 +1,8 @@
-using Studio.Foundation;
-
 namespace Studio.Routes;
 
-public class Api
+public class Api : Foundation.Routes
 {
-    public static void Register(Application app)
+    public void Register()
     {
         
     }
