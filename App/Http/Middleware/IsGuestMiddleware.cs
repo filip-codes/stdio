@@ -1,8 +1,10 @@
+using Studio.Http;
+
 namespace Studio.App.Http.Middleware;
 
 public class IsGuestMiddleware : Foundation.Middleware
 {
-    public IsGuestMiddleware()
+    public void Handle(Request request)
     {
         
     }

@@ -11,6 +11,7 @@ public class Request
     public Request(HttpListenerRequest request)
     {
         this.HttpListenerRequest = request;
+        this.Url = request.Url.AbsolutePath;
     }
     
     public string? Input(string key)

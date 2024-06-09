@@ -1,9 +1,11 @@
+using Studio.Http;
+
 namespace Studio.App.Http.Middleware;
 
-public class IsAuthenticatedMiddleware
+public class IsAuthenticatedMiddleware : Foundation.Middleware
 {
-    public IsAuthenticatedMiddleware()
+    public void Handle(Request request)
     {
-        Console.WriteLine("Hello from IsAuthenticatedMiddleware");
+        Console.WriteLine("Handling request url" + request.Url);
     }
 }

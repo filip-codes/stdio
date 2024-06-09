@@ -50,20 +50,24 @@ public class Route
         return this._name;
     }
     
-    public void RunMiddlewares()
+    /// <summary>
+    /// Run every registered middleware for the route.
+    /// </summary>
+    public void RunMiddlewares(Application app)
     {
         foreach (var middleware in Middlewares)
         {
             var instance = Activator.CreateInstance(middleware);
-            MethodInfo? handleMethod = middleware.GetMethod("Handle");
-            // get all fields from middleware
-            // var fields = middleware.GetFields();
-            // foreach (var field in fields)
-            // {
-            //     Console.WriteLine(field.Name);
-            //     field.SetValue(instance, App.Resolve(field.FieldType));
-            // }
-            handleMethod?.Invoke(instance, null);
+            
+            foreach (var field in middleware.GetFields())
+            {
+                // try to resolve the field by type
+                field.SetValue(instance, this.App.Resolve(field.FieldType));
+            }
+
+            MethodInfo? handle = middleware.GetMethod("Handle");
+            var parameters = app.ResolveMultiple(handle?.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+            handle?.Invoke(instance, parameters);
         }
     }
 }

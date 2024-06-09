@@ -185,7 +185,8 @@ public class Application : Container
         
         Route? route = routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
-        route.RunMiddlewares();
+        if (route is not null)
+            route.RunMiddlewares(this);
 
         byte[] buffer = new byte[0];
 

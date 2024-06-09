@@ -18,7 +18,7 @@ public class Router
     public Route Get(string path, Type controller, string method)
     {
         Route route = new Route(path, controller, method, HttpMethod.Get);
-        
+        route.App = this.App.Resolve<Application>();
         Routes.Add(route);
         
         return route;
