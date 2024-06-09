@@ -39,6 +39,9 @@ public static class String
 
     public static string Prepend(this string str, string value)
     {
+        if (string.IsNullOrEmpty(str))
+            str = "";
+        
         return value + str;
     }
 }

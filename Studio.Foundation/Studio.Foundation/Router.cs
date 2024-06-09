@@ -1,5 +1,5 @@
-using System.Collections.ObjectModel;
 using System.Reflection;
+using Studio.Support.Extensions;
 
 namespace Studio.Foundation;
 
@@ -19,13 +19,34 @@ public class Router
     
     public Router Prefix(string prefix)
     {
+        if (string.IsNullOrEmpty(prefix))
+            throw new ArgumentNullException(nameof(prefix));
+        
+        if (!prefix.EndsWith("/"))
+            prefix = prefix.Append("/");
+
+        if (!prefix.StartsWith("/"))
+            prefix = prefix.Prepend("/");
+        
         this._prefix = prefix;
         return this;
     }
     
     public Route Get(string path, Type controller, string method)
     {
-        Route route = new Route(this._prefix + path, controller, method, HttpMethod.Get);
+        if (!string.IsNullOrEmpty(this._prefix))
+        {
+            if (path.StartsWith("/"))
+                path = path.Remove(0, 1);
+                
+            path = this._prefix.Append(path);   
+        }
+        else
+        {
+            path = path.StartsWith("/") ? path : path.Prepend("/");
+        }
+        
+        Route route = new Route(path, controller, method, HttpMethod.Get);
         route.App = this.App.Resolve<Application>();
         Routes.Add(route);
         
@@ -49,11 +70,12 @@ public class Router
         var fields = type.GetFields();
 
         foreach (var field in fields)
-        {
             field.SetValue(instance, App.Resolve(field.FieldType));
-        }
 
         MethodInfo? registerMethod = type.GetMethod("Register");
-        registerMethod?.Invoke(instance, null);
+        var parameters = App.ResolveMultiple(registerMethod?.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+        registerMethod?.Invoke(instance, parameters);
+        
+        this._prefix = "";
     }
 }
