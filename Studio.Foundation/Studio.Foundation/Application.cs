@@ -14,10 +14,6 @@ public class Application : Container
     public string Name { get; set; } = "Studio";
     private static readonly HttpListener Listener = new();
     private readonly string _uri;
-    // private RouteCollection _routes { get; set; }
-    
-    // bad practice, response sollte nicht in der klasse gehalten werden
-    private HttpListenerResponse _response { get; set; }
     
     private IEnumerable<Type> ConfigTypes { get; set; }
     
@@ -167,19 +163,21 @@ public class Application : Container
     {
         // ToDo: Get the right path for Views without hardcoding it
         string? content = File.ReadAllText($"Studio.Foundation/Studio.Foundation/Views/Errors/{statusCode}.cshtml").ReplaceLineEndings().Replace("{{ message }}", message);
-        byte[] buffer = Encoding.UTF8.GetBytes(content);
-        this._response.ContentLength64 = buffer?.Length ?? 0;
-        this._response.StatusCode = statusCode;
-        this._response.ContentType = "text/html";
+        // byte[] buffer = Encoding.UTF8.GetBytes(content);
+        // this._response.ContentLength64 = buffer?.Length ?? 0;
+        // this._response.StatusCode = statusCode;
+        // this._response.ContentType = "text/html";
+        //
+        // await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+        // this._response.OutputStream.Close();
 
-        await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-        this._response.OutputStream.Close();
+        this.Resolve<Response>().Handle(content);
     }
     
     private async Task ProcessRequest(HttpListenerContext context)
     {
         this.Register(() => new Request(context.Request));
-        this._response = context.Response;
+        this.Register(() => new Response(context.Response));
 
         List<Route> routes = this.Resolve<Router>().Routes;
         
@@ -235,11 +233,6 @@ public class Application : Container
             Abort("404 - Not Found", 404);
         }
 
-        this._response.ContentLength64 = buffer?.Length ?? 0;
-        this._response.StatusCode = 200;
-        this._response.ContentType = "text/html";
-
-        await this._response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-        this._response.OutputStream.Close();
+        this.Resolve<Response>().Handle(Encoding.UTF8.GetString(buffer));
     }
 }

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# take arguments
+dotnet run --project ./Studio.Console/Studio.Console.csproj "$@"

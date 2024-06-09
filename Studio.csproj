@@ -12,6 +12,7 @@
     <None Remove="Studio.Http\**" />
     <None Remove="Studio.Foundation\**" />
     <None Remove="Studio.Exceptions\**" />
+    <None Remove="Studio.Console\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
     <Compile Remove="Studio.Http\**" />
     <Compile Remove="Studio.Foundation\**" />
     <Compile Remove="Studio.Exceptions\**" />
+    <Compile Remove="Studio.Console\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +30,7 @@
     <EmbeddedResource Remove="Studio.Http\**" />
     <EmbeddedResource Remove="Studio.Foundation\**" />
     <EmbeddedResource Remove="Studio.Exceptions\**" />
+    <EmbeddedResource Remove="Studio.Console\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +39,7 @@
     <Content Remove="Studio.Http\**" />
     <Content Remove="Studio.Foundation\**" />
     <Content Remove="Studio.Exceptions\**" />
+    <Content Remove="Studio.Console\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +62,12 @@
     <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\project.assets.json" />
     <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\project.packagespec.json" />
     <_ContentIncludedByDefault Remove="Studio.Exceptions\obj\Studio.Exceptions.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\bin\Debug\net8.0\Studio.Console.deps.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\bin\Debug\net8.0\Studio.Console.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\obj\Debug\net8.0\Studio.Console.sourcelink.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Studio.Console\obj\Studio.Console.csproj.nuget.dgspec.json" />
   </ItemGroup>
 
   <ItemGroup>
