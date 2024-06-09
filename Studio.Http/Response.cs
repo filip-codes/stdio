@@ -12,12 +12,19 @@ public class Response
         this._response = response;
     }
     
-    public void Handle(string content)
+    public void Redirect(string path)
+    {
+        this._response.Redirect(path);
+    }
+
+    public Response Handle(string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         
         this._response.ContentLength64 = buffer.Length;
         this._response.OutputStream.Write(buffer, 0, buffer.Length);
         this._response.OutputStream.Close();
+
+        return this;
     }
 }

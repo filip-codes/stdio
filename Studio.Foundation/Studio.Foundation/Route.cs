@@ -37,7 +37,7 @@ public class Route
 
     public Route Name(string name)
     {
-        if (name is null)
+        if (string.IsNullOrEmpty(name))
             throw new ArgumentNullException(nameof(name));
 
         this._name = name;

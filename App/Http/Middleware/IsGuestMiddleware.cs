@@ -6,6 +6,6 @@ public class IsGuestMiddleware : Foundation.Middleware
 {
     public void Handle(Request request)
     {
-        
+        //
     }
 }
