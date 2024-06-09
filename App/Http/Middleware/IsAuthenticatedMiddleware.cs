@@ -6,6 +6,6 @@ public class IsAuthenticatedMiddleware : Foundation.Middleware
 {
     public void Handle(Request request)
     {
-        Console.WriteLine("Handling request url" + request.Url);
+        //
     }
 }

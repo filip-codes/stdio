@@ -44,7 +44,7 @@ public class Route
         
         return this;
     }
-
+    
     public string GetName()
     {
         return this._name;
@@ -60,10 +60,7 @@ public class Route
             var instance = Activator.CreateInstance(middleware);
             
             foreach (var field in middleware.GetFields())
-            {
-                // try to resolve the field by type
                 field.SetValue(instance, this.App.Resolve(field.FieldType));
-            }
 
             MethodInfo? handle = middleware.GetMethod("Handle");
             var parameters = app.ResolveMultiple(handle?.GetParameters().Select(parameter => parameter.ParameterType).ToArray());

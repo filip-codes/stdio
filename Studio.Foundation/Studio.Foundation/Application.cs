@@ -182,9 +182,6 @@ public class Application : Container
         this._response = context.Response;
 
         List<Route> routes = this.Resolve<Router>().Routes;
-
-        foreach (var routess in routes)
-            Console.WriteLine(routess.Path);
         
         Route? route = routes.FirstOrDefault(route => route.Path == context.Request.Url?.AbsolutePath);
 
